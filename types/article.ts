@@ -8,5 +8,8 @@ export interface Article {
     createdAt?: Date;
     updatedAt?: Date;
     creator_uid?: string;
+    creator_name?: string;
+    creator_photoURL?: string;
+    image_binary?: File;
 }
 

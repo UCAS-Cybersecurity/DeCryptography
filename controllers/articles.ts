@@ -8,9 +8,14 @@ export const articlesCollection = collection(db, collectionName);
 
 export const add = async (article: Article) => {
   // current timestamp
-  article.createdAt = new Date(); 
+  article.createdAt = new Date();
   article.creator_uid = auth.currentUser?.uid;
-  console.log(article.creator_uid);
+  auth.currentUser?.displayName &&
+    (article.creator_name = auth.currentUser?.displayName);
+  auth.currentUser?.photoURL &&
+    (article.creator_photoURL = auth.currentUser?.photoURL);
+  // unset article image_binary completely
+  delete article.image_binary;
   const docRef = await addDoc(articlesCollection, article);
   console.log("Document written with ID: ", docRef.id);
   return docRef.id;
