@@ -1,5 +1,6 @@
 import { onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import ArticleCard from "../components/ArticleCard";
 import { articlesCollection } from "../controllers/articles";
 import { Article } from "../types";
 
@@ -17,12 +18,9 @@ export default function Home() {
   }, []);
   return (
     <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xxl:grid-cols-3 gap-4">
         {articles.map((article) => (
-          <div key={article.uid}>
-            <h1>{article.title}</h1>
-            <p>{article.content}</p>
-          </div>
+          <ArticleCard article={article} />
         ))}
       </div>
     </div>
