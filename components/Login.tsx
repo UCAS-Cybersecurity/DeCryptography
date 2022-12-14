@@ -85,11 +85,13 @@ export default function Login() {
           </div>
         )}
         {!isLoggingIn && (
-          <CropImageField
-            onFileChange={(file: any) => setFile(file)}
-            aspectRatio={1 / 1}
-            defaultImage=""
-          />
+          <div className="w-40 h-40">
+            <CropImageField
+              onFileChange={(file: any) => setFile(file)}
+              aspectRatio={1 / 1}
+              defaultImage=""
+            />
+          </div>
         )}
         {!isLoggingIn && (
           <input
