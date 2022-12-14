@@ -16,13 +16,13 @@ export default function Home() {
     });
   }, []);
   return (
-    <>
+    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       {articles.map((article) => (
         <div key={article.uid}>
           <h1>{article.title}</h1>
           <p>{article.content}</p>
         </div>
       ))}
-    </>
+    </div>
   );
 }
