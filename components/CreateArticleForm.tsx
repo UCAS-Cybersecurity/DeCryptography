@@ -14,7 +14,6 @@ import { storage } from "../firebase";
 export default function CreateArticleForm() {
   const [article, setArticle] = useState<Article>({});
   const router = useRouter();
-  // const [errors, setErrors] = useState<Article>({});
   const [isCustom, setCustom] = useState(false);
   async function saveArticle() {
     await add(article);
@@ -22,7 +21,7 @@ export default function CreateArticleForm() {
   }
   
   async function uploadImage() {
-    const file = article.image_binary;
+    const file = article?.image_binary;
     if (!file) return saveArticle();
     let url = "";
     const storageRef = ref(storage, `images/articles/${new Date()}`);

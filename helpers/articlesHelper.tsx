@@ -9,8 +9,8 @@ export function castArticle(doc: DocumentSnapshot<DocumentData>) {
     updatedAt = doc.data()?.createdAt?.toDate();
   } catch (error) {}
   return {
-    uid: doc.id,
-    ...doc.data(),
+    uid: doc?.id,
+    ...doc?.data(),
     createdAt,
     updatedAt,
   } as Article;
