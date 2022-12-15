@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  assetPrefix: '/DeCryptography/',
+  assetPrefix: '/DeCryptography',
+  basePath: '/DeCryptography',
   images: {
     unoptimized: true
   }
