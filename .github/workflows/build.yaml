@@ -27,6 +27,10 @@ jobs:
           for q in (os.getenv("ENV_VAL")):
             data.write(q)
         shell: python
+      - name: set next.config.js
+        run: |
+          mv next.config.js .next.config.js
+          mv next.config.js.gh next.config.js
 
       - run: npm install
       - run: npm run build
