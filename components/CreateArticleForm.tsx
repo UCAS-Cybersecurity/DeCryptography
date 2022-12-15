@@ -12,17 +12,23 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase";
 
 export default function CreateArticleForm() {
-  const [article, setArticle] = useState<Article>({});
+  const [article, setArticle] = useState<Article>({
+    content: "",
+    title: "",
+    thumbnail: "",
+    shortDescription: "",
+    youtubeLink: "",
+  });
   const router = useRouter();
   const [isCustom, setCustom] = useState(false);
-  async function saveArticle() {
+  async function saveArticle(article: Article) {
     await add(article);
     router.push("/");
   }
-  
+
   async function uploadImage() {
     const file = article?.image_binary;
-    if (!file) return saveArticle();
+    if (!file) return saveArticle(article);
     let url = "";
     const storageRef = ref(storage, `images/articles/${new Date()}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -48,7 +54,7 @@ export default function CreateArticleForm() {
         url = await getDownloadURL(uploadTask.snapshot.ref);
         setArticle({ ...article, thumbnail: url });
         console.log("File available at", url);
-        await saveArticle();
+        await saveArticle({ ...article, thumbnail: url});
       }
     );
   }

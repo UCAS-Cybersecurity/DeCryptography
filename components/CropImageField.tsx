@@ -126,8 +126,9 @@ export default function CropImageField(props: {
         <Image
           className="w-full h-full object-cover"
           src={
-            cropData ??
-            "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
+            cropData != null && cropData != ""
+              ? cropData
+              : "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
           }
           alt="cropped"
           fill
