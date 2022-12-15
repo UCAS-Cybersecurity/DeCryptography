@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DeCryptography
 
-## Getting Started
+## About
+An application to share descriptions of the most common cryptography algorithms. want to learn more about the project? Contact [me](https://t.me/Khader_Kh).
 
-First, run the development server:
+## Content Collaborations
+You are very welcome to share with us! learn [how to write content](https://ucas-cybersecurity.github.io/DeCryptography/article/3JgVOSqWvjIo5MEIjNCi).
+
+## Code Collaborations
+We are happy to collaborate with the community. you can join us on if you want. [more info](https://t.me/Khader_Kh)
+
+## How to run
+To run the project you need a firebase app to make things work. learn how to [create a new app](https://firebase.google.com/).
+## App env
+After you have your firebase app and running you can link your clone to it by copying .env.example
 
 ```bash
+cp .env.example .env
+```
+Then edit it to match your app config
+```bash
+nano .env
+```
+```.env
+NEXT_PUBLIC_API_KEY=############################
+NEXT_PUBLIC_AUTH_DOMAIN=########################
+NEXT_PUBLIC_PROJECT_ID=#########################
+NEXT_PUBLIC_STORAGE_BUCKET=#####################
+NEXT_PUBLIC_MESSAGING_SENDER_ID=################
+NEXT_PUBLIC_APP_ID=#############################
+NEXT_PUBLIC_MEASUREMENT_ID=#####################
+```
+Then you're all set to go, you can install and run you're clone as a normal nextjs app
+
+```bash
+npm install
 npm run dev
 # or
+yarn install
 yarn dev
 ```
 
+
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Github Actions
+DeCryptography depends on github actions for continuos deployments if you want to benefit from actions add custom github secrets
+- `env` should contain a copy of you're `.env` file contents
+- `FIREBASE_TOKEN` should contain a firebase token to an account that can deploy the configured firebase app
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
