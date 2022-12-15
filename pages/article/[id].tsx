@@ -7,8 +7,8 @@ import { Article } from "../../types";
 import InnerHTML from "dangerously-set-html-content";
 import Image from "next/image";
 
-export default function CreateArticlePage() {
-  const uid = useRouter().query.id;
+export default function Article() {
+  const uid = useRouter()?.query?.id;
   const [article, setArticle] = useState<Article | null>();
   const [loading, setLoading] = useState(true);
 

@@ -102,8 +102,11 @@ export default function Header() {
                         <span className="sr-only">Open user menu</span>
                         <Image
                           className="h-8 w-8 rounded-full"
-                          src={currentUser?.photoURL}
-                          alt=""
+                          src={
+                            currentUser?.photoURL ??
+                            "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
+                          }
+                          alt="Avatar"
                         />
                       </Menu.Button>
                     </div>

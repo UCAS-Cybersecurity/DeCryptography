@@ -45,7 +45,7 @@ export default function Login() {
     let url = "";
     const storageRef = ref(storage, `images/users/${uid}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
-    await uploadTask.on(
+    await uploadTask?.on(
       "state_changed",
       (snapshot) => {
         const progress =
@@ -64,7 +64,7 @@ export default function Login() {
         console.log(error);
       },
       async () => {
-        url = await getDownloadURL(uploadTask.snapshot.ref);
+        url = await getDownloadURL(uploadTask?.snapshot?.ref);
         console.log("File available at", url);
         await updateUser({
           displayName: name,
