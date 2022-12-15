@@ -1,7 +1,7 @@
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 
 export default function CropImageField(props: {
@@ -14,11 +14,10 @@ export default function CropImageField(props: {
   const [image, setImage] = useState<string | null>();
   const [cropper, setCropper] = useState<any>();
 
-  useEffect(() => {
-    if (cropData) {
-      onFileChange(dataURLtoFile(cropData, "image.png"));
-    }
-  }, [cropData, onFileChange]);
+  function crop(data: any) {
+    setCropData(data);
+    onFileChange(dataURLtoFile(data, "image.png"));
+  }
 
   function dataURLtoFile(url: string, filename: string) {
     const arr = url.split(",");
@@ -35,7 +34,7 @@ export default function CropImageField(props: {
   }
   const getCropData = () => {
     if (typeof cropper !== "undefined") {
-      setCropData(cropper.getCroppedCanvas().toDataURL());
+      crop(cropper.getCroppedCanvas().toDataURL());
     }
   };
   const filePickerRef = useRef<HTMLInputElement>(null);
