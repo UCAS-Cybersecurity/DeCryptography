@@ -6,7 +6,7 @@ export default function ArticleCard(props: { article: Article }) {
   const { article } = props;
   return (
     <Link href={`/article/${article?.uid}`}>
-      <div className="max-w-sm rounded overflow-hidden">
+      <div className="max-w-sm rounded overflow-hidden w-full">
         <div className="aspect-video relative">
           <Image
             className="w-full rounded-sm"
@@ -23,12 +23,12 @@ export default function ArticleCard(props: { article: Article }) {
           <div title={article?.title}></div>
           <div className="w-full border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
             <div>
-              <div className="text-gray-900 font-bold text-xl mb-2">
+              <div className="text-gray-900 font-bold text-xl mb-2 h-14 overflow-hidden">
                 {article?.title}
+                <p className="text-gray-700 text-base">
+                  {article?.shortDescription?.substring(0, 48)}...
+                </p>
               </div>
-              <p className="text-gray-700 text-base">
-                {article?.shortDescription?.substring(0, 50)}...
-              </p>
             </div>
             <div className="flex items-center">
               <Image
