@@ -71,6 +71,7 @@ export default function Login() {
           photoURL: url,
         });
         router.push("/");
+        window.location.href = "/DeCryptography/";
       }
     );
   }
