@@ -121,7 +121,7 @@ export default function CropImageField(props: {
         </>
       ) : null}
       <div
-        className="flex flex-col items-center justify-center w-full h-full rounded bg-gray-200 cursor-pointer overflow-hidden"
+        className="flex flex-col items-center justify-center w-full h-full rounded bg-gray-200 cursor-pointer overflow-hidden relative"
         onClick={() => filePickerRef.current?.click()}
       >
         <Image
@@ -131,6 +131,7 @@ export default function CropImageField(props: {
             "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
           }
           alt="cropped"
+          fill
         />
       </div>
     </>

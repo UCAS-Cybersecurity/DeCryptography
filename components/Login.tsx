@@ -17,8 +17,8 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    if (currentUser) {
-      router.push("/");
+    if (currentUser && currentUser?.uid) {
+      router.push("/").then(() => console.log("Welcome back!")).catch((err) => console.log(err));
     }
   }, [currentUser, router]);
 
@@ -70,6 +70,7 @@ export default function Login() {
           displayName: name,
           photoURL: url,
         });
+        router.push("/");
       }
     );
   }

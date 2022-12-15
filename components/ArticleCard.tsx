@@ -7,11 +7,14 @@ export default function ArticleCard(props: { article: Article }) {
   return (
     <Link href={`/article/${article?.uid}`}>
       <div className="max-w-sm rounded overflow-hidden">
-        <Image
-          className="w-full aspect-video rounded-sm"
-          src={article?.thumbnail ?? ""}
-          alt="Sunset in the mountains"
-        />
+        <div className="aspect-video relative">
+          <Image
+            className="w-full rounded-sm"
+            src={article?.thumbnail ?? ""}
+            alt="Sunset in the mountains"
+            fill
+          />
+        </div>
         <div className="w-full rounded-sm">
           <div title={article?.title}></div>
           <div className="w-full border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
@@ -31,6 +34,8 @@ export default function ArticleCard(props: { article: Article }) {
                   "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
                 }
                 alt="Avatar of Jonathan Reinink"
+                width={40}
+                height={40}
               />
               <div className="text-sm">
                 <p className="text-gray-900 leading-none">

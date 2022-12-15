@@ -30,12 +30,15 @@ export default function ArticlePage() {
         </div>
       )} */}
       <div className="max-w-4xl m-auto">
-        <Image
-          src={article?.thumbnail ?? ""}
-          alt="Picture of the author"
-          className="rounded aspect-video max-w-6xl mx-auto my-4"
-          style={{ width: "100%" }}
-        />
+        <div className="aspect-video max-w-6xl mx-auto my-4 relative">
+          <Image
+            src={article?.thumbnail ?? ""}
+            alt="Picture of the author"
+            className="rounded"
+            style={{ width: "100%" }}
+            fill
+          />
+        </div>
       </div>
       <h1 className="text-3xl font-bold">{article?.title}</h1>
       <div className="flex items-center my-2">
@@ -46,6 +49,8 @@ export default function ArticlePage() {
             "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
           }
           alt="Avatar"
+          height={80}
+          width={80}
         />
         <div className="text">
           <p className="text-gray-500">{article?.creator_name}</p>

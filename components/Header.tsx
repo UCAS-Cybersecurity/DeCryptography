@@ -46,11 +46,15 @@ export default function Header() {
                     className="block h-10 w-auto lg:hidden"
                     src="https://ucas.edu.ps/assets/images/logo4.png"
                     alt="Your Company"
+                    height={40}
+                    width={10}
                   />
                   <Image
                     className="hidden h-10 w-auto lg:block"
                     src="https://ucas.edu.ps/assets/images/logo4.png"
                     alt="Your Company"
+                    height={40}
+                    width={10}
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -107,6 +111,8 @@ export default function Header() {
                             "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
                           }
                           alt="Avatar"
+                          width={32}
+                          height={32}
                         />
                       </Menu.Button>
                     </div>
