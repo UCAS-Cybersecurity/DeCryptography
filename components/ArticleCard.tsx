@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Article } from "../types";
 
@@ -6,9 +7,9 @@ export default function ArticleCard(props: { article: Article }) {
   return (
     <Link href={`/article/${article.uid}`}>
       <div className="max-w-sm rounded overflow-hidden">
-        <img
+        <Image
           className="w-full aspect-video rounded-sm"
-          src={article.thumbnail}
+          src={article.thumbnail ?? ""}
           alt="Sunset in the mountains"
         />
         <div className="w-full rounded-sm">
@@ -23,7 +24,7 @@ export default function ArticleCard(props: { article: Article }) {
               </p>
             </div>
             <div className="flex items-center">
-              <img
+              <Image
                 className="w-10 h-10 rounded-full mr-4"
                 src={
                   article.creator_photoURL ??

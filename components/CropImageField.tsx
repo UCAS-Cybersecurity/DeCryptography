@@ -2,6 +2,7 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 export default function CropImageField(props: {
   defaultImage: string | null;
@@ -17,7 +18,7 @@ export default function CropImageField(props: {
     if (cropData) {
       onFileChange(dataURLtoFile(cropData, "image.png"));
     }
-  }, [cropData]);
+  }, [cropData, onFileChange]);
 
   function dataURLtoFile(url: string, filename: string) {
     const arr = url.split(",");
@@ -123,7 +124,7 @@ export default function CropImageField(props: {
         className="flex flex-col items-center justify-center w-full h-full rounded bg-gray-200 cursor-pointer overflow-hidden"
         onClick={() => filePickerRef.current?.click()}
       >
-        <img
+        <Image
           className="w-full h-full object-cover"
           src={
             cropData ??

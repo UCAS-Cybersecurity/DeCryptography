@@ -57,8 +57,8 @@ export default function CreateArticleForm() {
   const { currentUser } = useAuth();
 
   useEffect(() => {
-    if (!currentUser || !currentUser.uid) router.push("/login");
-  }, [currentUser]);
+    if (!currentUser || !currentUser?.uid) router.push("/login");
+  }, [currentUser, router]);
 
   return (
     <div className="m-auto my-4 mt-6 max-w-5xl px-2 sm:px-6 lg:px-8">

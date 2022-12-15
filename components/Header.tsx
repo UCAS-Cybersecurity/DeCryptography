@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
+import Image from "next/image";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -21,7 +22,7 @@ function classNames(...classes: string[]) {
 
 export default function Header() {
   const { currentUser, logout } = useAuth();
-  const isAuthenticated = currentUser != null && currentUser.uid != null;
+  const isAuthenticated = currentUser != null && currentUser?.uid != null;
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -41,12 +42,12 @@ export default function Header() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
+                  <Image
                     className="block h-10 w-auto lg:hidden"
                     src="https://ucas.edu.ps/assets/images/logo4.png"
                     alt="Your Company"
                   />
-                  <img
+                  <Image
                     className="hidden h-10 w-auto lg:block"
                     src="https://ucas.edu.ps/assets/images/logo4.png"
                     alt="Your Company"
@@ -55,7 +56,7 @@ export default function Header() {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
@@ -67,7 +68,7 @@ export default function Header() {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -85,12 +86,12 @@ export default function Header() {
                 {!isAuthenticated && (
                   <div className="ml-3 relative">
                     <div>
-                      <a
+                      <Link
                         href="/login"
                         className="bg-slate-600 text-white px-3 py-2 rounded-md text-sm font-medium "
                       >
                         Login
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -99,9 +100,9 @@ export default function Header() {
                     <div>
                       <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="sr-only">Open user menu</span>
-                        <img
+                        <Image
                           className="h-8 w-8 rounded-full"
-                          src={currentUser.photoURL}
+                          src={currentUser?.photoURL}
                           alt=""
                         />
                       </Menu.Button>
@@ -118,7 +119,7 @@ export default function Header() {
                       <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <Link
                               href="#"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
@@ -126,12 +127,12 @@ export default function Header() {
                               )}
                             >
                               Your Profile
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <Link
                               href="#"
                               className={classNames(
                                 active ? "bg-gray-100" : "",
@@ -139,12 +140,12 @@ export default function Header() {
                               )}
                             >
                               Settings
-                            </a>
+                            </Link>
                           )}
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
+                            <button
                               onClick={() => {
                                 logout();
                               }}
@@ -154,7 +155,7 @@ export default function Header() {
                               )}
                             >
                               Sign out
-                            </a>
+                            </button>
                           )}
                         </Menu.Item>
                       </Menu.Items>

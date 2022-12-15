@@ -5,22 +5,22 @@ import { articlesCollection } from "../../controllers/articles";
 import { castArticle, getYoutubeId } from "../../helpers/articlesHelper";
 import { Article } from "../../types";
 import InnerHTML from "dangerously-set-html-content";
+import Image from "next/image";
 
 export default function CreateArticlePage() {
   const uid = useRouter().query.id;
   const [article, setArticle] = useState<Article | null>();
   const [loading, setLoading] = useState(true);
 
-  async function load() {
-    setLoading(true);
-    const ref = doc(articlesCollection, uid as string);
-    setArticle(castArticle(await getDoc(ref)));
-    setLoading(false);
-  }
-
   useEffect(() => {
+    async function load() {
+      setLoading(true);
+      const ref = doc(articlesCollection, uid as string);
+      setArticle(castArticle(await getDoc(ref)));
+      setLoading(false);
+    }
     load();
-  }, []);
+  }, [uid]);
 
   return (
     <div className="max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -30,15 +30,16 @@ export default function CreateArticlePage() {
         </div>
       )} */}
       <div className="max-w-4xl m-auto">
-        <img
-          src={article?.thumbnail}
+        <Image
+          src={article?.thumbnail ?? ""}
+          alt="Picture of the author"
           className="rounded aspect-video max-w-6xl mx-auto my-4"
           style={{ width: "100%" }}
         />
       </div>
       <h1 className="text-3xl font-bold">{article?.title}</h1>
       <div className="flex items-center my-2">
-        <img
+        <Image
           className="w-20 h-20 rounded-full mr-4"
           src={
             article?.creator_photoURL ??
@@ -59,11 +60,11 @@ export default function CreateArticlePage() {
       {article?.content != null && (
         <InnerHTML html={article?.content!} className="my-4" />
       )}
-      {article && getYoutubeId(article.youtubeLink) && (
+      {article && getYoutubeId(article?.youtubeLink) && (
         <iframe
           className="w-full aspect-video rounded-sm"
           src={`https://www.youtube.com/embed/${getYoutubeId(
-            article.youtubeLink
+            article?.youtubeLink
           )}`}
           allowFullScreen
         />

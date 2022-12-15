@@ -20,7 +20,7 @@ export default function Login() {
     if (currentUser) {
       router.push("/");
     }
-  }, [currentUser]);
+  }, [currentUser, router]);
 
   async function submitHandler() {
     if (!email || !password) {

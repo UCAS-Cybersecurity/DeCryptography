@@ -25,8 +25,8 @@ export function AuthProvider({ children }) {
     }
 
     function updateUser({ displayName, photoURL }) {
-        if (!auth.currentUser) return;
-        return updateProfile(auth.currentUser, {
+        if (!auth?.currentUser) return;
+        return updateProfile(auth?.currentUser, {
             displayName,
             photoURL
         })
