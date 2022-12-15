@@ -31,13 +31,15 @@ export default function ArticlePage() {
       )} */}
       <div className="max-w-4xl m-auto">
         <div className="aspect-video max-w-6xl mx-auto my-4 relative">
-          <Image
-            src={article?.thumbnail ?? ""}
-            alt="Picture of the author"
-            className="rounded"
-            style={{ width: "100%" }}
-            fill
-          />
+          {article?.thumbnail && (
+            <Image
+              src={article?.thumbnail!}
+              alt="Picture of the author"
+              className="rounded"
+              style={{ width: "100%" }}
+              fill
+            />
+          )}
         </div>
       </div>
       <h1 className="text-3xl font-bold">{article?.title}</h1>

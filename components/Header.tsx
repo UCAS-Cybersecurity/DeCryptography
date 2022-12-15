@@ -42,20 +42,24 @@ export default function Header() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <Image
-                    className="block h-10 w-auto lg:hidden"
-                    src="https://ucas.edu.ps/assets/images/logo4.png"
-                    alt="Your Company"
-                    height={40}
-                    width={10}
-                  />
-                  <Image
-                    className="hidden h-10 w-auto lg:block"
-                    src="https://ucas.edu.ps/assets/images/logo4.png"
-                    alt="Your Company"
-                    height={40}
-                    width={10}
-                  />
+                  <Link href="/">
+                    <Image
+                      className="block h-10 w-auto lg:hidden"
+                      src="https://ucas.edu.ps/assets/images/logo4.png"
+                      alt="Your Company"
+                      height={40}
+                      width={10}
+                    />
+                  </Link>
+                  <Link href="/">
+                    <Image
+                      className="hidden h-10 w-auto lg:block"
+                      src="https://ucas.edu.ps/assets/images/logo4.png"
+                      alt="Your Company"
+                      height={40}
+                      width={10}
+                    />
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -154,7 +158,7 @@ export default function Header() {
                         </Menu.Item>
                         <Menu.Item>
                           {({ active }) => (
-                            <button
+                            <div
                               onClick={() => {
                                 logout();
                               }}
@@ -164,7 +168,7 @@ export default function Header() {
                               )}
                             >
                               Sign out
-                            </button>
+                            </div>
                           )}
                         </Menu.Item>
                       </Menu.Items>

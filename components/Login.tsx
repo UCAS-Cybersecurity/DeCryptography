@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
 import CropImageField from "./CropImageField";
@@ -18,7 +18,10 @@ export default function Login() {
 
   useEffect(() => {
     if (currentUser && currentUser?.uid) {
-      router.push("/").then(() => console.log("Welcome back!")).catch((err) => console.log(err));
+      router
+        .push("/")
+        .then(() => console.log("Welcome back!"))
+        .catch((err) => console.log(err));
     }
   }, [currentUser, router]);
 
@@ -70,8 +73,6 @@ export default function Login() {
           displayName: name,
           photoURL: url,
         });
-        router.push("/");
-        window.location.href = "/";
       }
     );
   }
