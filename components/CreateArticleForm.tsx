@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { PencilIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
+import {
+  PencilIcon,
+  CodeBracketIcon,
+  DocumentIcon,
+  FolderArrowDownIcon,
+} from "@heroicons/react/24/outline";
 import { Article } from "../types";
 import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -10,6 +15,82 @@ import { useRouter } from "next/router";
 import CropImageField from "./CropImageField";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase";
+import { useDropzone } from "react-dropzone";
+
+const tabs = [
+  {
+    name: "Content",
+    icon: PencilIcon,
+    build: (article: Article, setArticle: any) => (
+      <div className="mt-4 w-full h-full">
+        <ReactQuill
+          className="h-full"
+          value={article.content}
+          onChange={(value) => setArticle({ ...article, content: value })}
+        />
+      </div>
+    ),
+  },
+  {
+    name: "Code",
+    icon: CodeBracketIcon,
+    build: (article: Article, setArticle: any) => (
+      <div className="mt-4 h-full">
+        <textarea
+          className="w-full h-full p-4 border border-gray-300 block"
+          // rows={12}
+          cols={50}
+          value={article.content}
+          onChange={(e) => setArticle({ ...article, content: e.target.value })}
+        />
+      </div>
+    ),
+  },
+  {
+    name: "PDF",
+    icon: DocumentIcon,
+    build: (article: Article, setArticle: any) => {
+      return <Dropzone article={article} setArticle={setArticle} />;
+    },
+  },
+];
+
+function Dropzone(props: { article: Article; setArticle: any }) {
+  const { article: Article, setArticle: any } = props;
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    // Do something with the files
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+  });
+  return (
+    <div
+      // style={{
+      //   background: "#dadada",
+      //   width: 250,
+      //   height: 250,
+      //   display: "flex",
+      //   justifyContent: "center",
+      //   alignItems: "center",
+      //   padding: 50,
+      //   textAlign: "center",
+      // }}
+
+      className="w-full h-full p-4 border border-gray-300 text-center flex items-center justify-center"
+      {...getRootProps()}
+    >
+      <div className="w-full">
+        <FolderArrowDownIcon className="w-10 h-10 mx-auto my-2" />
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <p>Drag 'n' drop some files here, or click to select files</p>
+        )}
+      </div>
+      <input {...getInputProps()} />
+    </div>
+  );
+}
 
 export default function CreateArticleForm() {
   const [article, setArticle] = useState<Article>({
@@ -19,11 +100,14 @@ export default function CreateArticleForm() {
     shortDescription: "",
     youtubeLink: "",
   });
+  const [tabIndex, setTabIndex] = useState(0);
   const router = useRouter();
-  const [isCustom, setCustom] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   async function saveArticle(article: Article) {
+    setIsLoading(true);
     await add(article);
     router.push("/");
+    setIsLoading(false);
   }
 
   async function uploadImage() {
@@ -54,7 +138,7 @@ export default function CreateArticleForm() {
         url = await getDownloadURL(uploadTask.snapshot.ref);
         setArticle({ ...article, thumbnail: url });
         console.log("File available at", url);
-        await saveArticle({ ...article, thumbnail: url});
+        await saveArticle({ ...article, thumbnail: url });
       }
     );
   }
@@ -113,87 +197,77 @@ export default function CreateArticleForm() {
 
         <div className="border-b border-gray-200 dark:border-gray-700 w-full">
           <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-            <li className="mr-2">
-              <button
-                onClick={() => setCustom(false)}
-                className={
-                  !isCustom
-                    ? "inline-flex p-4 text-blue-600 rounded-t-lg border-b-2 border-blue-600  active dark:text-blue-500 dark:border-blue-500 group"
-                    : "inline-flex p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group"
-                }
-              >
-                <PencilIcon
+            {tabs.map((tab, index) => (
+              <li key={index} className="mr-2">
+                <button
+                  onClick={() => setTabIndex(index)}
                   className={
-                    !isCustom
-                      ? "mr-2 w-5 h-5 text-blue-600 group-hover:text-blue-500 dark:text-blue-500 dark:group-hover:text-blue-400"
-                      : "mr-2 w-5 h-5 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+                    index === tabIndex
+                      ? "inline-flex p-4 text-blue-600 rounded-t-lg border-b-2 border-blue-600  active dark:text-blue-500 dark:border-blue-500 group"
+                      : "inline-flex p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group"
                   }
-                />
-                Editor
-              </button>
-            </li>
-            <li className="mr-2">
-              <button
-                onClick={() => setCustom(true)}
-                className={
-                  isCustom
-                    ? "inline-flex p-4 text-blue-600 rounded-t-lg border-b-2 border-blue-600  active dark:text-blue-500 dark:border-blue-500 group"
-                    : "inline-flex p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group"
-                }
-                aria-current="page"
-              >
-                <CodeBracketIcon
-                  className={
-                    isCustom
-                      ? "mr-2 w-5 h-5 text-blue-600 group-hover:text-blue-500 dark:text-blue-500 dark:group-hover:text-blue-400"
-                      : "mr-2 w-5 h-5 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
-                  }
-                />
-                Custom Code
-              </button>
-            </li>
+                  aria-current="page"
+                >
+                  <tab.icon
+                    className={
+                      index === tabIndex
+                        ? "mr-2 w-5 h-5 text-blue-600 group-hover:text-blue-500 dark:text-blue-500 dark:group-hover:text-blue-400"
+                        : "mr-2 w-5 h-5 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+                    }
+                  />
+                  {tab.name}
+                </button>
+              </li>
+            ))}
           </ul>
-          {!isCustom && (
-            <ReactQuill
-              // show all modules
-              modules={{
-                toolbar: [
-                  [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                  ["bold", "italic", "underline", "strike", "blockquote"],
-                  [
-                    { list: "ordered" },
-                    { list: "bullet" },
-                    { indent: "-1" },
-                    { indent: "+1" },
-                  ],
-                  ["link", "image", "video"],
-                  ["clean"],
-                ],
-              }}
-              className="h-96 mb-6 pb-6 w-full"
-              // style={{ width: "60rem" }}
-              theme="snow"
-              value={article.content}
-              onChange={(e) => setArticle({ ...article, content: e })}
-            />
-          )}
-          {isCustom && (
-            <textarea
-              value={article.content}
-              onChange={(e) =>
-                setArticle({ ...article, content: e.target.value })
-              }
-              placeholder="Content"
-              className="block outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-white focus:border-cyan-300"
-              rows={50}
-              cols={500}
-            />
-          )}
+          <div className="h-96 mb-6 pb-6 w-full min-w-full">
+            {tabs
+              .filter((tab, index) => index === tabIndex)[0]
+              .build(article, setArticle)}
+          </div>
           <button
+            disabled={isLoading}
             onClick={uploadImage}
-            className="w-full border border-white border-solid py-2 duration-300 relative after:absolute after:top-0 after:right-full after:bg-white after:z-10 after:w-full after:h-full overflow-hidden hover:after:translate-x-full after:duration-300 hover:text-slate-900"
+            className="flex items-center justify-center w-full border border-white border-solid py-2 duration-300 relative after:absolute after:top-0 after:right-full after:bg-white after:z-10 after:w-full after:h-full overflow-hidden hover:after:translate-x-full after:duration-300 hover:text-slate-900"
           >
-            <h2 className="relative z-20">Submit</h2>
+            {isLoading && (
+              <svg
+                className="animate-spin hover:text-slate-900"
+                version="1.1"
+                id="loader-1"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="40px"
+                height="40px"
+                viewBox="0 0 40 40"
+                enable-background="new 0 0 40 40"
+              >
+                <path
+                  opacity="0.2"
+                  fill="#fff"
+                  d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"
+                />
+                <path
+                  fill="#fff"
+                  d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+    C22.32,8.481,24.301,9.057,26.013,10.047z"
+                >
+                  <animateTransform
+                    attributeType="xml"
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 20 20"
+                    to="360 20 20"
+                    dur="0.5s"
+                    repeatCount="indefinite"
+                  />
+                </path>
+              </svg>
+            )}
+            Submit
           </button>
         </div>
       </div>

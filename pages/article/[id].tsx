@@ -23,7 +23,7 @@ export default function ArticlePage() {
   }, [uid]);
 
   return (
-    <div className="max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div className="m-auto max-w-5xl px-2 sm:px-6 lg:px-8">
       {/* {article && (
         <div className="max-w-xl">
           <ArticleCard article={article!} />

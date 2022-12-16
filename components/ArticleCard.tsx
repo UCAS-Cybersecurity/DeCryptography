@@ -6,7 +6,7 @@ export default function ArticleCard(props: { article: Article }) {
   const { article } = props;
   return (
     <Link href={`/article/${article?.uid}`}>
-      <div className="max-w-sm rounded overflow-hidden w-full">
+      <div className="m-auto max-w-sm rounded overflow-hidden w-full">
         <div className="aspect-video relative">
           <Image
             className="w-full rounded-sm"
