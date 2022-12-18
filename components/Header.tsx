@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "../components/Image";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
