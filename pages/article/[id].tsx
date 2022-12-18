@@ -5,7 +5,7 @@ import { articlesCollection } from "../../controllers/articles";
 import { castArticle, getYoutubeId } from "../../helpers/articlesHelper";
 import { Article } from "../../types";
 import InnerHTML from "dangerously-set-html-content";
-import Image from "/components/Image";
+import Image from "../../components/Image";
 
 export default function ArticlePage() {
   const uid = useRouter()?.query?.id;
