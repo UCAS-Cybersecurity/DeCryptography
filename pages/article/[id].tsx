@@ -12,14 +12,10 @@ export default function ArticlePage() {
   const [article, setArticle] = useState<Article | null>();
   const [loading, setLoading] = useState(true);
 
-  function resizeIframe(obj: any) {
-    obj.style.height =
-      obj.contentWindow.document.documentElement.scrollHeight + "px";
-  }
-
   async function loadHtmlContent(url: string) {
     const response = await fetch(url);
     const html = await response.text();
+    console.log(html);
     return html;
   }
 
@@ -28,15 +24,21 @@ export default function ArticlePage() {
       setLoading(true);
       const ref = doc(articlesCollection, uid as string);
       setArticle(castArticle(await getDoc(ref)));
-      if (article?.contentUrl)
-        setArticle({
-          ...article,
-          content: await loadHtmlContent(article?.contentUrl!),
-        });
       setLoading(false);
     }
     load();
   }, [uid]);
+
+  useEffect(() => {
+    loadHtmlContent(article?.contentUrl!).then(
+      (html) =>
+        article?.contentUrl && !article?.content &&
+        setArticle({
+          ...article,
+          content: html,
+        })
+    );
+  }, [article]);
 
   return (
     <div className="m-auto max-w-5xl px-2 sm:px-6 lg:px-8">

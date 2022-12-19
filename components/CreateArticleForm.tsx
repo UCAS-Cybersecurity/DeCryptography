@@ -114,6 +114,7 @@ export default function CreateArticleForm() {
 
   useEffect(() => {
     if (article.contentUrl && article.thumbnail) {
+      if (isLoading) return;
       saveArticle(article);
     }
   }, [article]);
