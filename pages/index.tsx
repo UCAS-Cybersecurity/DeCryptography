@@ -16,7 +16,10 @@ export default function Home() {
   return (
     <>
       <section className="relative">
-        <div className="bg-gradient-to-r from-blue to-green w-full pt-6 mb-10 rounded-br-3xl">
+        <div
+          className="bg-gradient-to-r from-blue to-green w-full pt-6 mb-10 "
+          style={{ borderBottomRightRadius: "70px" }}
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 m-auto gap-4 content-center justify-center mx-4 px-4">
             <div className="sm:p-4 sm:m-4 mb-8 md:mx-8 text-base">
               <h1 className="text-3xl font-bold text-white">

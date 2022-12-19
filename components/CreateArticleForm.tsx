@@ -135,10 +135,16 @@ export default function CreateArticleForm() {
         console.log(error);
       },
       async () => {
-        url = await getDownloadURL(uploadTask.snapshot.ref);
-        setArticle({ ...article, thumbnail: url });
-        console.log("File available at", url);
-        await saveArticle({ ...article, thumbnail: url });
+        try {
+          setIsLoading(true);
+          url = await getDownloadURL(uploadTask.snapshot.ref);
+          setArticle({ ...article, thumbnail: url });
+          console.log("File available at", url);
+          await saveArticle({ ...article, thumbnail: url });
+          setIsLoading(false);
+        } catch (error) {
+          console.log(error);
+        }
       }
     );
   }

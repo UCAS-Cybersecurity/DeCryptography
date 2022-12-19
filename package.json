@@ -12,6 +12,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.5",
     "@heroicons/react": "^2.0.13",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/node": "18.11.13",
     "@types/react": "18.0.26",
     "dangerously-set-html-content": "^1.0.12",

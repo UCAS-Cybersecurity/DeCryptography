@@ -59,11 +59,11 @@ export default function Header() {
                     </Link>
                     <Link href="/">
                       <Image
-                        className="hidden h-10 w-auto lg:block"
+                        className="hidden h-12 w-auto lg:block"
                         src="/full-logo.png"
                         alt="Ucas"
-                        height={40}
-                        width={10}
+                        height={73}
+                        width={450}
                       />
                     </Link>
                   </div>
@@ -74,11 +74,12 @@ export default function Header() {
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            item.current
-                              ? "bg-blue text-white"
-                              : "text-white hover:bg-blue hover:text-white",
-                            "p-2 rounded-md text-sm font-medium"
+                            "text-white font-bold hover:text-white",
+                            "p-2 rounded-md text-lg"
                           )}
+                          style={{
+                            color: item.current ? "#d9d9d9" : "white",
+                          }}
                           aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
@@ -88,25 +89,28 @@ export default function Header() {
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <Link
-                    href={"/article/create"}
-                    className="rounded-full bg-green p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue"
-                  >
-                    <span className="sr-only">New Article</span>
-                    <PencilSquareIcon className="h-6 w-6" aria-hidden="true" />
-                  </Link>
+                  {isAuthenticated && (
+                    <Link
+                      href={"/article/create"}
+                      className="rounded-full bg-green p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue"
+                    >
+                      <span className="sr-only">New Article</span>
+                      <PencilSquareIcon
+                        className="h-6 w-6"
+                        aria-hidden="true"
+                      />
+                    </Link>
+                  )}
 
                   {/* Profile dropdown */}
                   {!isAuthenticated && (
                     <div className="ml-3 relative">
-                      <div>
-                        <Link
-                          href="/login"
-                          className="bg-green text-white px-3 py-2 rounded-md text-sm font-medium "
-                        >
-                          Login
-                        </Link>
-                      </div>
+                      <Link
+                        href="/login"
+                        className="bg-blue text-white py-2 rounded-sm font-bold text-lg px-4"
+                      >
+                        Sign In
+                      </Link>
                     </div>
                   )}
                   {isAuthenticated && (
@@ -193,9 +197,7 @@ export default function Header() {
                     as="a"
                     href={item.href}
                     className={classNames(
-                      item.current
-                        ? "bg-blue text-white ring-1"
-                        : "text-white hover:bg-gray-500 hover:text-white",
+                      "text-white hover:bg-gray-500 hover:text-white",
                       "block px-3 py-2 rounded-md text-base font-medium align-text-bottom"
                     )}
                     aria-current={item.current ? "page" : undefined}
