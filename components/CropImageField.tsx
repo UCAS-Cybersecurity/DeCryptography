@@ -1,6 +1,6 @@
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRef, useState } from "react";
 import Image from "../components/Image";
 
@@ -123,6 +123,12 @@ export default function CropImageField(props: {
         className="flex flex-col items-center justify-center w-full h-full rounded bg-gray-200 cursor-pointer overflow-hidden relative"
         onClick={() => filePickerRef.current?.click()}
       >
+        <div className="top-0 left-0 w-full h-full opacity-0 hover:opacity-100 transition-all bg-opacity-50 z-10 absolute bg-slate-500">
+          <div className="flex flex-col items-center justify-center w-full h-full">
+            <CameraIcon className="h-6 w-6 text-white" />
+            <p className="text-white">Click to change</p>
+          </div>
+        </div>
         <Image
           className="w-full h-full object-cover"
           src={

@@ -22,7 +22,7 @@ const tabs = [
     name: "Content",
     icon: PencilIcon,
     build: (article: Article, setArticle: any) => (
-      <div className="mt-4 w-full h-full">
+      <div className="w-full h-full">
         <ReactQuill
           className="h-full"
           value={article.content}
@@ -35,7 +35,7 @@ const tabs = [
     name: "Code",
     icon: CodeBracketIcon,
     build: (article: Article, setArticle: any) => (
-      <div className="mt-4 h-full">
+      <div className="h-full">
         <textarea
           className="w-full h-full p-4 border border-gray-300 block"
           // rows={12}
@@ -158,15 +158,12 @@ export default function CreateArticleForm() {
   return (
     <div className="m-auto my-4 mt-6 max-w-5xl px-2 sm:px-6 lg:px-8">
       <div className="flex-1 text-xs sm:text-sm flex flex-col justify-center items-center gap-2 sm:gap-4 max-w-6xl w-full">
-        <h1 className="font-extrabold select-none text-2xl sm:text-4xl">
-          New Article
-        </h1>
         {/* {error && (
           <div className="w-full border-rose-400 border text-center border-solid text-rose-400 py-2">
             {error}
           </div>
         )} */}
-        <div className="aspect-video w-full">
+        <div className="aspect-video w-96 ring-green ring-1 rounded ring-offset-2">
           <CropImageField
             defaultImage=""
             aspectRatio={16 / 9}
@@ -180,16 +177,17 @@ export default function CreateArticleForm() {
           value={article.title}
           onChange={(e) => setArticle({ ...article, title: e.target.value })}
           placeholder="Title"
-          className="outline-none duration-300 border-b-2 border-solid border-white focus:border-cyan-300 text-slate-900 p-2 w-full"
+          className="outline-none duration-300 border-b-2 border-solid border-slate-300 text-lg focus:border-blue text-slate-900 p-2 w-full"
         />
-        <input
+        <textarea
+          placeholder="Short Description"
+          className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-slate-300 text-lg focus:border-blue"
+          rows={4}
+          cols={50}
           value={article.shortDescription}
           onChange={(e) =>
             setArticle({ ...article, shortDescription: e.target.value })
           }
-          type="text"
-          placeholder="Short Description"
-          className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-white focus:border-cyan-300"
         />
         <input
           value={article.youtubeLink}
@@ -198,7 +196,7 @@ export default function CreateArticleForm() {
           }
           type="text"
           placeholder="Youtube iframe"
-          className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-white focus:border-cyan-300"
+          className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-slate-300 text-lg focus:border-blue"
         />
 
         <div className="border-b border-gray-200 dark:border-gray-700 w-full">
@@ -209,7 +207,7 @@ export default function CreateArticleForm() {
                   onClick={() => setTabIndex(index)}
                   className={
                     index === tabIndex
-                      ? "inline-flex p-4 text-blue-600 rounded-t-lg border-b-2 border-blue-600  active dark:text-blue-500 dark:border-blue-500 group"
+                      ? "inline-flex p-4 text-blue rounded-t-lg border-b-2 border-blue  active dark:text-blue dark:border-blue group"
                       : "inline-flex p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group"
                   }
                   aria-current="page"
@@ -234,11 +232,11 @@ export default function CreateArticleForm() {
           <button
             disabled={isLoading}
             onClick={uploadImage}
-            className="flex items-center justify-center w-full border border-white border-solid py-2 duration-300 relative after:absolute after:top-0 after:right-full after:bg-white after:z-10 after:w-full after:h-full overflow-hidden hover:after:translate-x-full after:duration-300 hover:text-slate-900"
+            className="border-0 outline-none ring-0 flex items-center justify-center w-full text-lg py-2 duration-300 relative overflow-hidden from-blue to-green text-white enabled:hover:shadow-lg disabled:bg-slate-400 enabled:bg-gradient-to-r"
           >
             {isLoading && (
               <svg
-                className="animate-spin hover:text-slate-900"
+                className="animate-spin text-slate-900"
                 version="1.1"
                 id="loader-1"
                 xmlns="http://www.w3.org/2000/svg"
