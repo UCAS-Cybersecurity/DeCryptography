@@ -5,11 +5,13 @@ export interface Article {
     shortDescription?: string;
     thumbnail?: string;
     youtubeLink?: string;
+    youtubeLink2?: string;
     createdAt?: Date;
     updatedAt?: Date;
     creator_uid?: string;
     creator_name?: string;
     creator_photoURL?: string;
     image_binary?: File;
+    contentUrl?: string;
 }
 

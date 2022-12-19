@@ -22,7 +22,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function Header() {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout } = useAuth()!;
   const isAuthenticated = currentUser != null && currentUser?.uid != null;
   return (
     <>
@@ -210,6 +210,9 @@ export default function Header() {
           </>
         )}
       </Disclosure>
+      <div className="w-full absolute top-0 left-0 z-20">
+        
+      </div>
     </>
   );
 }

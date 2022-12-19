@@ -14,8 +14,9 @@ import { add } from "../controllers/articles";
 import { useRouter } from "next/router";
 import CropImageField from "./CropImageField";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "../firebase";
+import { auth, storage } from "../firebase";
 import { useDropzone } from "react-dropzone";
+import useUploadHelpers from "../hooks/useUploadHelpers";
 
 const tabs = [
   {
@@ -93,6 +94,7 @@ function Dropzone(props: { article: Article; setArticle: any }) {
 }
 
 export default function CreateArticleForm() {
+  const uploadCtx = useUploadHelpers();
   const [article, setArticle] = useState<Article>({
     content: "",
     title: "",
@@ -110,46 +112,38 @@ export default function CreateArticleForm() {
     setIsLoading(false);
   }
 
-  async function uploadImage() {
+  useEffect(() => {
+    if (article.contentUrl && article.thumbnail) {
+      saveArticle(article);
+    }
+  }, [article]);
+
+  async function upload() {
     const file = article?.image_binary;
-    if (!file) return saveArticle(article);
-    let url = "";
-    const storageRef = ref(storage, `images/articles/${new Date()}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    await uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-        }
-      },
-      (error) => {
-        console.log(error);
-      },
-      async () => {
-        try {
-          setIsLoading(true);
-          url = await getDownloadURL(uploadTask.snapshot.ref);
-          setArticle({ ...article, thumbnail: url });
-          console.log("File available at", url);
-          await saveArticle({ ...article, thumbnail: url });
-          setIsLoading(false);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    );
+
+    await uploadCtx.uploadImage({
+      file,
+      label: "Article Thumbnail",
+      onDone: (url: any) => setArticle({ ...article, thumbnail: url }),
+      path: `images/articles/${
+        auth.currentUser?.uid
+      }.${new Date().getTime()}.png`,
+    });
+
+    const html = article.content;
+    const blob = new Blob([html!], { type: "text/html" });
+    const content = new File([blob], "index.html", { type: "text/html" });
+    await uploadCtx.uploadImage({
+      file: content,
+      label: "Article Content",
+      onDone: (url: any) => setArticle({ ...article, contentUrl: url }),
+      path: `content/articles/${
+        auth.currentUser?.uid
+      }.${new Date().getTime()}.html`,
+    });
   }
 
-  const { currentUser } = useAuth();
+  const { currentUser } = useAuth()!;
 
   useEffect(() => {
     if (!currentUser || !currentUser?.uid) router.push("/login");
@@ -199,6 +193,16 @@ export default function CreateArticleForm() {
           className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-slate-300 text-lg focus:border-blue"
         />
 
+        <input
+          value={article.youtubeLink2}
+          onChange={(e) =>
+            setArticle({ ...article, youtubeLink2: e.target.value })
+          }
+          type="text"
+          placeholder="Youtube iframe"
+          className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-slate-300 text-lg focus:border-blue"
+        />
+
         <div className="border-b border-gray-200 dark:border-gray-700 w-full">
           <ul className="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
             {tabs.map((tab, index) => (
@@ -231,7 +235,7 @@ export default function CreateArticleForm() {
           </div>
           <button
             disabled={isLoading}
-            onClick={uploadImage}
+            onClick={upload}
             className="border-0 outline-none ring-0 flex items-center justify-center w-full text-lg py-2 duration-300 relative overflow-hidden from-blue to-green text-white enabled:hover:shadow-lg disabled:bg-slate-400 enabled:bg-gradient-to-r"
           >
             {isLoading && (

@@ -12,11 +12,27 @@ export default function ArticlePage() {
   const [article, setArticle] = useState<Article | null>();
   const [loading, setLoading] = useState(true);
 
+  function resizeIframe(obj: any) {
+    obj.style.height =
+      obj.contentWindow.document.documentElement.scrollHeight + "px";
+  }
+
+  async function loadHtmlContent(url: string) {
+    const response = await fetch(url);
+    const html = await response.text();
+    return html;
+  }
+
   useEffect(() => {
     async function load() {
       setLoading(true);
       const ref = doc(articlesCollection, uid as string);
       setArticle(castArticle(await getDoc(ref)));
+      if (article?.contentUrl)
+        setArticle({
+          ...article,
+          content: await loadHtmlContent(article?.contentUrl!),
+        });
       setLoading(false);
     }
     load();
@@ -69,9 +85,18 @@ export default function ArticlePage() {
       )}
       {article && getYoutubeId(article?.youtubeLink) && (
         <iframe
-          className="w-full aspect-video rounded-sm"
+          className="w-full aspect-video rounded-sm my-10"
           src={`https://www.youtube.com/embed/${getYoutubeId(
             article?.youtubeLink
+          )}`}
+          allowFullScreen
+        />
+      )}
+      {article && getYoutubeId(article?.youtubeLink2) && (
+        <iframe
+          className="w-full aspect-video rounded-sm my-10"
+          src={`https://www.youtube.com/embed/${getYoutubeId(
+            article?.youtubeLink2
           )}`}
           allowFullScreen
         />

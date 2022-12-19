@@ -16,6 +16,7 @@ export const add = async (article: Article) => {
     (article.creator_photoURL = auth.currentUser?.photoURL);
   // unset article image_binary completely
   delete article.image_binary;
+  delete article.content;
   const docRef = await addDoc(articlesCollection, article);
   console.log("Document written with ID: ", docRef.id);
   return docRef.id;

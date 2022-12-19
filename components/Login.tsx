@@ -4,16 +4,19 @@ import { useRouter } from "next/router";
 import CropImageField from "./CropImageField";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import useUploadHelpers from "../hooks/useUploadHelpers";
 
 export default function Login() {
+  const uploadCtx = useUploadHelpers();
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoggingIn, setIsLoggingIn] = useState(true);
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | undefined>();
 
-  const { login, signup, currentUser, updateUser } = useAuth();
+  const { login, signup, currentUser, updateUser } = useAuth()!;
   const router = useRouter();
 
   useEffect(() => {
@@ -45,37 +48,25 @@ export default function Login() {
   }
 
   async function uploadImage(file: File, uid: string) {
-    let url = "";
-    const storageRef = ref(storage, `images/users/${uid}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    await uploadTask?.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
-        switch (snapshot.state) {
-          case "paused":
-            console.log("Upload is paused");
-            break;
-          case "running":
-            console.log("Upload is running");
-            break;
-        }
-      },
-      (error) => {
-        console.log(error);
-      },
-      async () => {
-        url = await getDownloadURL(uploadTask?.snapshot?.ref);
-        console.log("File available at", url);
+    await uploadCtx.uploadImage({
+      label: "User Profile",
+      file,
+      onDone: async (url: any) => {
         await updateUser({
           displayName: name,
           photoURL: url,
         });
-      }
-    );
+      },
+      onError: (error: any) => {
+        console.log(error);
+      },
+      onProgress: (progress: any) => {
+        console.log(progress);
+      },
+      path: `images/users/${uid}.png`,
+    });
   }
+
   return (
     <>
       <div className="flex-1 text-xs sm:text-sm flex flex-col justify-center items-center gap-2 sm:gap-4">
