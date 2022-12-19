@@ -102,7 +102,7 @@ export default function Login() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
-            className="outline-none duration-300 border-b-2 border-solid border-white focus:border-cyan-300 text-slate-900 p-2 w-full max-w-[40ch]"
+            className="outline-none duration-300 border-b-2 border-solid border-white focus:border-blue text-slate-900 p-2 w-full max-w-[40ch]"
           />
         )}
         <input
@@ -110,7 +110,7 @@ export default function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email Address"
-          className="outline-none duration-300 border-b-2 border-solid border-white focus:border-cyan-300 text-slate-900 p-2 w-full max-w-[40ch]"
+          className="outline-none duration-300 border-b-2 border-solid border-white focus:border-blue text-slate-900 p-2 w-full max-w-[40ch]"
         />
 
         <input
@@ -118,11 +118,11 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           type="password"
           placeholder="Password"
-          className="outline-none text-slate-900 p-2 w-full max-w-[40ch] duration-300 border-b-2 border-solid border-white focus:border-cyan-300"
+          className="outline-none text-slate-900 p-2 w-full max-w-[40ch] duration-300 border-b-2 border-solid border-white focus:border-blue"
         />
         <button
           onClick={submitHandler}
-          className="w-full max-w-[40ch] border border-white border-solid py-2 duration-300 relative after:absolute after:top-0 after:right-full after:bg-white after:z-10 after:w-full after:h-full overflow-hidden hover:after:translate-x-full after:duration-300 hover:text-slate-900"
+          className="w-full max-w-[40ch] bg-green border border-solid py-2 duration-300 relative after:absolute after:top-0 after:right-full after:bg-blue after:z-10 after:w-full after:h-full overflow-hidden hover:after:translate-x-full after:duration-300 hover:text-slate-900"
         >
           <h2 className="relative z-20">Submit</h2>
         </button>
