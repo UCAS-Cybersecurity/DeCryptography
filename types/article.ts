@@ -5,6 +5,7 @@ export interface Article {
     shortDescription?: string;
     thumbnail?: string;
     youtubeLink?: string;
+    replLink?: string;
     youtubeLink2?: string;
     createdAt?: Date;
     updatedAt?: Date;

@@ -101,10 +101,24 @@ export default function CreateArticleForm() {
     thumbnail: "",
     shortDescription: "",
     youtubeLink: "",
+    contentUrl: "",
+    youtubeLink2: "",
+    replLink: "",
   });
   const [tabIndex, setTabIndex] = useState(0);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [thumb, setThumb] = useState("");
+  const [contentUrl, setContentUrl] = useState("");
+
+  useEffect(() => {
+    thumb && setArticle({ ...article, thumbnail: thumb });
+  }, [thumb]);
+
+  useEffect(() => {
+    contentUrl && setArticle({ ...article, contentUrl: contentUrl });
+  }, [contentUrl]);
+
   async function saveArticle(article: Article) {
     setIsLoading(true);
     await add(article);
@@ -113,19 +127,20 @@ export default function CreateArticleForm() {
   }
 
   useEffect(() => {
+    console.log(article);
     if (article.contentUrl && article.thumbnail) {
       if (isLoading) return;
       saveArticle(article);
     }
   }, [article]);
 
-  async function upload() {
+  function upload() {
     const file = article?.image_binary;
 
-    await uploadCtx.uploadImage({
+    uploadCtx.uploadImage({
       file,
       label: "Article Thumbnail",
-      onDone: (url: any) => setArticle({ ...article, thumbnail: url }),
+      onDone: (url: any) => setThumb(url),
       path: `images/articles/${
         auth.currentUser?.uid
       }.${new Date().getTime()}.png`,
@@ -134,10 +149,10 @@ export default function CreateArticleForm() {
     const html = article.content;
     const blob = new Blob([html!], { type: "text/html" });
     const content = new File([blob], "index.html", { type: "text/html" });
-    await uploadCtx.uploadImage({
+    uploadCtx.uploadImage({
       file: content,
       label: "Article Content",
-      onDone: (url: any) => setArticle({ ...article, contentUrl: url }),
+      onDone: (url: any) => setContentUrl(url),
       path: `content/articles/${
         auth.currentUser?.uid
       }.${new Date().getTime()}.html`,
@@ -200,7 +215,17 @@ export default function CreateArticleForm() {
             setArticle({ ...article, youtubeLink2: e.target.value })
           }
           type="text"
-          placeholder="Youtube iframe"
+          placeholder="Youtube iframe Secondary"
+          className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-slate-300 text-lg focus:border-blue"
+        />
+
+        <input
+          value={article.replLink}
+          onChange={(e) =>
+            setArticle({ ...article, replLink: e.target.value })
+          }
+          type="text"
+          placeholder="Repl link"
           className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-slate-300 text-lg focus:border-blue"
         />
 
@@ -250,7 +275,7 @@ export default function CreateArticleForm() {
                 width="40px"
                 height="40px"
                 viewBox="0 0 40 40"
-                enable-background="new 0 0 40 40"
+                enableBackground="new 0 0 40 40"
               >
                 <path
                   opacity="0.2"

@@ -29,7 +29,7 @@ export default function ArticleCard(props: { article: Article }) {
                 </p>
               </div>
             </div>
-            <div className="flex items-center" mt-8>
+            <div className="flex items-center mt-8">
               <Image
                 className="w-12 h-12 rounded-full mr-4"
                 src={
