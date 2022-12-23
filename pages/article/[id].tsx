@@ -6,12 +6,17 @@ import { castArticle, getYoutubeId } from "../../helpers/articlesHelper";
 import { Article } from "../../types";
 import InnerHTML from "dangerously-set-html-content";
 import Image from "../../components/Image";
+import { remove } from "../../controllers/articles";
+// import dynamic from "next/dynamic";
+
+// const PDFViewer = dynamic(() => import("pdf-viewer-reactjs"), { ssr: false });
 
 export default function ArticlePage() {
-  const uid = useRouter()?.query?.id;
+  const router = useRouter();
+  const uid = router?.query?.id as string;
   const [article, setArticle] = useState<Article | null>();
   const [loading, setLoading] = useState(true);
-
+  const [loadedContent, setLoadedContent] = useState(false);
   async function loadHtmlContent(url: string) {
     const response = await fetch(url);
     const html = await response.text();
@@ -30,14 +35,16 @@ export default function ArticlePage() {
   }, [uid]);
 
   useEffect(() => {
-    loadHtmlContent(article?.contentUrl!).then(
-      (html) =>
-        article?.contentUrl && !article?.content &&
-        setArticle({
-          ...article,
-          content: html,
-        })
-    );
+    if (!loadedContent)
+      loadHtmlContent(article?.contentUrl!).then((html) => {
+        if (article?.contentUrl && !article?.content) {
+          setLoadedContent(true);
+          setArticle({
+            ...article,
+            content: html,
+          });
+        }
+      });
   }, [article]);
 
   return (
@@ -60,7 +67,15 @@ export default function ArticlePage() {
           )}
         </div>
       </div>
-      <h1 className="text-3xl font-bold">{article?.title}</h1>
+      <div className="flex justify-between my-2">
+        <h1 className="text-3xl font-bold">{article?.title}</h1>
+        <div className="font-bold">
+          <span onClick={() => {remove(uid).then(() => {
+              router.back();
+          })}} className="text-red-600 mr-2 cursor-pointer">Delete</span>
+          <span className="text-green">Edit</span>
+        </div>
+      </div>
       <div className="flex items-center my-2">
         <Image
           className="w-20 h-20 rounded-full mr-4"
@@ -82,8 +97,11 @@ export default function ArticlePage() {
       <p className="text-gray-500">{article?.shortDescription}</p>
 
       {/* render html description */}
-      {article?.content != null && (
+      {article?.content && article?.content != "" && (
         <InnerHTML html={article?.content!} className="my-4" />
+      )}
+      {article?.pdfUrl && (
+        <iframe src={article?.pdfUrl} className="w-full h-screen" />
       )}
       {article && getYoutubeId(article?.youtubeLink) && (
         <iframe

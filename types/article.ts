@@ -14,5 +14,6 @@ export interface Article {
     creator_photoURL?: string;
     image_binary?: File;
     contentUrl?: string;
+    pdfUrl?: string;
 }
 

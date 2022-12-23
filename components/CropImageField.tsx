@@ -58,6 +58,7 @@ export default function CropImageField(props: {
     <>
       <input
         type="file"
+        accept="image/*.png, image/*.jpg, image/*.jpeg"
         onChange={onChange}
         className="hidden"
         ref={filePickerRef}

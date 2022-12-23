@@ -13,8 +13,7 @@ import "react-quill/dist/quill.snow.css";
 import { add } from "../controllers/articles";
 import { useRouter } from "next/router";
 import CropImageField from "./CropImageField";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { auth, storage } from "../firebase";
+import { auth } from "../firebase";
 import { useDropzone } from "react-dropzone";
 import useUploadHelpers from "../hooks/useUploadHelpers";
 
@@ -50,51 +49,93 @@ const tabs = [
   {
     name: "PDF",
     icon: DocumentIcon,
-    build: (article: Article, setArticle: any) => {
-      return <Dropzone article={article} setArticle={setArticle} />;
+    build: (
+      article: Article,
+      setArticle: any,
+      pdf: any,
+      setPdf: any,
+      setWaiting: any
+    ) => {
+      return <Dropzone pdf={pdf} setPdf={setPdf} setWaiting={setWaiting} />;
     },
   },
 ];
 
-function Dropzone(props: { article: Article; setArticle: any }) {
-  const { article: Article, setArticle: any } = props;
+function Dropzone(props: { pdf: any; setPdf: any; setWaiting: any }) {
+  const { pdf, setPdf, setWaiting } = props;
+  const [loading, setLoading] = useState(false);
+  const uploadCtx = useUploadHelpers();
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    // Do something with the files
+    if (acceptedFiles.length === 0) return;
+    setLoading(true);
+    setWaiting(true);
+    uploadCtx.uploadImage({
+      file: acceptedFiles[0],
+      label: "Pdf file",
+      onDone: (url: any) => {
+        setLoading(false);
+        setWaiting(false);
+        setPdf(url)
+      },
+      path: `pdf/articles/${auth.currentUser?.uid}.${new Date().getTime()}.pdf`,
+    });
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+    multiple: false,
     onDrop,
   });
   return (
-    <div
-      // style={{
-      //   background: "#dadada",
-      //   width: 250,
-      //   height: 250,
-      //   display: "flex",
-      //   justifyContent: "center",
-      //   alignItems: "center",
-      //   padding: 50,
-      //   textAlign: "center",
-      // }}
+    <>
+      <div
+        // style={{
+        //   background: "#dadada",
+        //   width: 250,
+        //   height: 250,
+        //   display: "flex",
+        //   justifyContent: "center",
+        //   alignItems: "center",
+        //   padding: 50,
+        //   textAlign: "center",
+        // }}
 
-      className="w-full h-full p-4 border border-gray-300 text-center flex items-center justify-center"
-      {...getRootProps()}
-    >
-      <div className="w-full">
-        <FolderArrowDownIcon className="w-10 h-10 mx-auto my-2" />
-        {isDragActive ? (
-          <p>Drop the files here ...</p>
-        ) : (
-          <p>Drop files here, or click to select files</p>
-        )}
+        className="w-full h-64 p-4 border border-gray-300 text-center flex items-center justify-center"
+        {...getRootProps()}
+      >
+        <div className="w-full">
+          <FolderArrowDownIcon className="w-10 h-10 mx-auto my-2" />
+          {isDragActive ? (
+            <p>Drop the files here ...</p>
+          ) : (
+            <p>Drop files here, or click to select files</p>
+          )}
+        </div>
+        <input {...getInputProps()} />
       </div>
-      <input {...getInputProps()} />
-    </div>
+      {(pdf || loading) && (
+        <div className="w-full flex items-center justify-start p-4 bg-gradient-to-r rounded-b-lg text-white font-bold from-blue to-green">
+          <FolderArrowDownIcon className="w-10 h-10 my-2" />
+          <a
+            href={loading ? "" : pdf}
+            target="_blank"
+            className="line-clamp-1 w-full"
+            rel="noreferrer"
+          >
+            {!loading ? `Uploaded ${pdf}` : "loading..."}
+          </a>
+        </div>
+      )}
+    </>
   );
 }
 
 export default function CreateArticleForm() {
   const uploadCtx = useUploadHelpers();
+  const [pdf, setPdf] = useState(null);
+  const [waiting, setWaiting] = useState(false);
   const [article, setArticle] = useState<Article>({
     content: "",
     title: "",
@@ -118,6 +159,10 @@ export default function CreateArticleForm() {
   useEffect(() => {
     contentUrl && setArticle({ ...article, contentUrl: contentUrl });
   }, [contentUrl]);
+
+  useEffect(() => {
+    pdf && setArticle({ ...article, pdfUrl: pdf });
+  }, [pdf]);
 
   async function saveArticle(article: Article) {
     setIsLoading(true);
@@ -221,9 +266,7 @@ export default function CreateArticleForm() {
 
         <input
           value={article.replLink}
-          onChange={(e) =>
-            setArticle({ ...article, replLink: e.target.value })
-          }
+          onChange={(e) => setArticle({ ...article, replLink: e.target.value })}
           type="text"
           placeholder="Repl link"
           className="outline-none text-slate-900 p-2 w-full duration-300 border-b-2 border-solid border-slate-300 text-lg focus:border-blue"
@@ -257,10 +300,10 @@ export default function CreateArticleForm() {
           <div className="h-96 mb-6 pb-6 w-full min-w-full">
             {tabs
               .filter((tab, index) => index === tabIndex)[0]
-              .build(article, setArticle)}
+              .build(article, setArticle, pdf, setPdf, setWaiting)}
           </div>
           <button
-            disabled={isLoading}
+            disabled={isLoading || waiting}
             onClick={upload}
             className="border-0 outline-none ring-0 flex items-center justify-center w-full text-lg py-2 duration-300 relative overflow-hidden from-blue to-green text-white enabled:hover:shadow-lg disabled:bg-slate-400 enabled:bg-gradient-to-r"
           >
