@@ -21,10 +21,7 @@ export default function ArticlePage() {
   const [loading, setLoading] = useState(true);
   const [loadedContent, setLoadedContent] = useState(false);
   async function loadHtmlContent(url: string) {
-    const response = await fetch(url);
-    const html = await response.text();
-    console.log(html);
-    return html;
+    return await (await fetch(url)).text();
   }
 
   useEffect(() => {

@@ -194,7 +194,7 @@ export default function EditArticleForm() {
       article.creator_uid !== "" &&
       article?.creator_uid !== auth?.currentUser?.uid
     )
-      console.log(article?.creator_uid, auth?.currentUser?.uid);
+      router.push("/");
   }, [article, auth?.currentUser?.uid]);
 
   useEffect(() => {

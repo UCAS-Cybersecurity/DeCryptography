@@ -18,7 +18,7 @@ export const add = async (article: Article) => {
   delete article.image_binary;
   delete article.content;
   const docRef = await addDoc(articlesCollection, article);
-  console.log("Document written with ID: ", docRef.id);
+  // console.log("Document written with ID: ", docRef.id);
   return docRef.id;
 };
 
