@@ -1,7 +1,7 @@
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "../components/Image";
 
 export default function CropImageField(props: {
@@ -11,6 +11,9 @@ export default function CropImageField(props: {
 }) {
   const { defaultImage, aspectRatio, onFileChange } = props;
   const [cropData, setCropData] = useState(defaultImage);
+  useEffect(() => {
+    setCropData(defaultImage);
+  }, [defaultImage]);
   const [image, setImage] = useState<string | null>();
   const [cropper, setCropper] = useState<any>();
 

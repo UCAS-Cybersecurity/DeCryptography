@@ -72,5 +72,5 @@ export default function useUploadHelpers() {
     );
     return false;
   }
-  return { uploadImage };
+  return { uploadImage, indicators };
 }

@@ -7,6 +7,8 @@ import { Article } from "../../types";
 import InnerHTML from "dangerously-set-html-content";
 import Image from "../../components/Image";
 import { remove } from "../../controllers/articles";
+import Link from "next/link";
+import { useAuth } from "../../context/AuthContext";
 // import dynamic from "next/dynamic";
 
 // const PDFViewer = dynamic(() => import("pdf-viewer-reactjs"), { ssr: false });
@@ -15,6 +17,7 @@ export default function ArticlePage() {
   const router = useRouter();
   const uid = router?.query?.id as string;
   const [article, setArticle] = useState<Article | null>();
+  const auth = useAuth();
   const [loading, setLoading] = useState(true);
   const [loadedContent, setLoadedContent] = useState(false);
   async function loadHtmlContent(url: string) {
@@ -69,12 +72,23 @@ export default function ArticlePage() {
       </div>
       <div className="flex justify-between my-2">
         <h1 className="text-3xl font-bold">{article?.title}</h1>
-        <div className="font-bold">
-          <span onClick={() => {remove(uid).then(() => {
-              router.back();
-          })}} className="text-red-600 mr-2 cursor-pointer">Delete</span>
-          <span className="text-green">Edit</span>
-        </div>
+        {auth?.currentUser?.uid == article?.creator_uid && (
+          <div className="font-bold">
+            <span
+              onClick={() => {
+                remove(uid).then(() => {
+                  router.back();
+                });
+              }}
+              className="text-red-600 mr-2 cursor-pointer"
+            >
+              Delete
+            </span>
+            <Link href={`/article/edit/${uid}`} className="text-green">
+              Edit
+            </Link>
+          </div>
+        )}
       </div>
       <div className="flex items-center my-2">
         <Image
