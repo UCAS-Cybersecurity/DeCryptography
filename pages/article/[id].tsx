@@ -10,6 +10,19 @@ import moment from "moment";
 export default function ArticlePage() {
   const { article, loading, router } = useArticle();
 
+  if (loading) {
+    return (
+      <PageTitle className="h-auto">
+        <div className="flex flex-col justify-center items-center w-full pb-8 px-2">
+          <h1 className="text-4xl font-light text-white m-auto max-w-5xl text-center py-5">
+            Loading...
+          </h1>
+          <Image src="/indicator.png" className="w-20 h-20 rounded-full my-2 shadow-lg animate-spin" width={80} height={80} />
+        </div>
+      </PageTitle>
+    );
+  }
+
   return (
     <>
       <PageTitle className="h-auto">
