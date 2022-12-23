@@ -1,6 +1,6 @@
-import Image from "../components/Image";
+import Image from "../base/Image";
 import Link from "next/link";
-import { Article } from "../types";
+import { Article } from "../../types";
 
 export default function ArticleCard(props: { article: Article }) {
   const { article } = props;
@@ -9,7 +9,7 @@ export default function ArticleCard(props: { article: Article }) {
       <div className="m-auto max-w-sm rounded overflow-hidden w-full">
         <div className="aspect-video relative">
           <Image
-            className="w-full rounded"
+            className="w-full rounded object-cover"
             src={
               article?.thumbnail
                 ? article?.thumbnail
@@ -31,7 +31,7 @@ export default function ArticleCard(props: { article: Article }) {
             </div>
             <div className="flex items-center mt-8">
               <Image
-                className="w-12 h-12 rounded-full mr-4"
+                className="w-12 h-12 rounded-full mr-4 object-cover"
                 src={
                   article?.creator_photoURL ??
                   "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"

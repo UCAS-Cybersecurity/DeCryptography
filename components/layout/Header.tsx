@@ -5,9 +5,9 @@ import {
   XMarkIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import Link from "next/link";
-import Image from "../components/Image";
+import Image from "../base/Image";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -26,7 +26,7 @@ export default function Header() {
   const isAuthenticated = currentUser != null && currentUser?.uid != null;
   return (
     <>
-      <div className="h-16"></div>
+      <div className="h-16 bg-gradient-to-r from-blue to-green"></div>
       <Disclosure
         as="nav"
         className="bg-gradient-to-r from-blue to-green fixed w-full z-10"

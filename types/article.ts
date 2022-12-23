@@ -15,5 +15,7 @@ export interface Article {
     image_binary?: File;
     contentUrl?: string;
     pdfUrl?: string;
+    canEdit?: boolean;
+    canDelete?: boolean;
 }
 

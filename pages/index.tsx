@@ -1,7 +1,7 @@
 import { onSnapshot } from "firebase/firestore";
-import Image from "../components/Image";
+import Image from "../components/base/Image";
 import { useEffect, useState } from "react";
-import ArticleCard from "../components/ArticleCard";
+import ArticleCard from "../components/article/ArticleCard";
 import { articlesCollection } from "../controllers/articles";
 import { castArticle } from "../helpers/articlesHelper";
 import { Article } from "../types";

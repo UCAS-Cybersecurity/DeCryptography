@@ -20,6 +20,7 @@
     "eslint-config-next": "13.0.6",
     "firebase": "^9.15.0",
     "firebase-functions": "^4.1.1",
+    "moment": "^2.29.4",
     "next": "13.0.6",
     "react": "^18.2.0",
     "react-cropper": "^2.1.8",

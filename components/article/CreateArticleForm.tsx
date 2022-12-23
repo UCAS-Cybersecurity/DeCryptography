@@ -1,23 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import {
   PencilIcon,
   CodeBracketIcon,
   DocumentIcon,
   FolderArrowDownIcon,
 } from "@heroicons/react/24/outline";
-import { Article } from "../types";
+import { Article } from "../../types";
 import dynamic from "next/dynamic";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
-import { add, articlesCollection, update } from "../controllers/articles";
+import { add } from "../../controllers/articles";
 import { useRouter } from "next/router";
-import CropImageField from "./CropImageField";
-import { auth } from "../firebase";
+import CropImageField from "../base/CropImageField";
+import { auth } from "../../firebase";
 import { useDropzone } from "react-dropzone";
-import useUploadHelpers from "../hooks/useUploadHelpers";
-import { doc, getDoc } from "firebase/firestore";
-import { castArticle } from "../helpers/articlesHelper";
+import useUploadHelpers from "../../hooks/useUploadHelpers";
 
 const tabs = [
   {
@@ -78,7 +76,7 @@ function Dropzone(props: { pdf: any; setPdf: any; setWaiting: any }) {
       onDone: (url: any) => {
         setLoading(false);
         setWaiting(false);
-        setPdf(url);
+        setPdf(url)
       },
       path: `pdf/articles/${auth.currentUser?.uid}.${new Date().getTime()}.pdf`,
     });
@@ -134,9 +132,7 @@ function Dropzone(props: { pdf: any; setPdf: any; setWaiting: any }) {
   );
 }
 
-export default function EditArticleForm() {
-  const router = useRouter();
-  const auth = useAuth();
+export default function CreateArticleForm() {
   const uploadCtx = useUploadHelpers();
   const [pdf, setPdf] = useState(null);
   const [waiting, setWaiting] = useState(false);
@@ -151,51 +147,10 @@ export default function EditArticleForm() {
     replLink: "",
   });
   const [tabIndex, setTabIndex] = useState(0);
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [thumb, setThumb] = useState("");
-  const [saving, setSaving] = useState(false);
   const [contentUrl, setContentUrl] = useState("");
-  const uid = router?.query?.id as string;
-  const [loading, setLoading] = useState(true);
-  const [loadedContent, setLoadedContent] = useState(false);
-  async function loadHtmlContent(url: string) {
-    const response = await fetch(url);
-    return await response.text();
-  }
-  const { currentUser } = useAuth()!;
-
-  useEffect(() => {
-    async function load() {
-      setLoading(true);
-      const ref = doc(articlesCollection, uid as string);
-      setArticle(castArticle(await getDoc(ref)));
-      setLoading(false);
-    }
-    load();
-  }, [uid]);
-
-  useEffect(() => {
-    if (!loadedContent)
-      loadHtmlContent(article?.contentUrl!).then((html) => {
-        if (article?.contentUrl && !article?.content) {
-          setLoadedContent(true);
-          setArticle({
-            ...article,
-            content: html,
-          });
-        }
-      });
-  }, [article]);
-
-  useEffect(() => {
-    if (
-      article &&
-      article?.creator_uid &&
-      article.creator_uid !== "" &&
-      article?.creator_uid !== auth?.currentUser?.uid
-    )
-      router.push("/");
-  }, [article, auth?.currentUser?.uid]);
 
   useEffect(() => {
     thumb && setArticle({ ...article, thumbnail: thumb });
@@ -211,22 +166,17 @@ export default function EditArticleForm() {
 
   async function saveArticle(article: Article) {
     setIsLoading(true);
-    await update(article);
+    await add(article);
     router.push("/");
     setIsLoading(false);
   }
 
   useEffect(() => {
-    if (
-      article.contentUrl &&
-      article.thumbnail &&
-      saving &&
-      uploadCtx.indicators?.uploads?.length !== 0
-    ) {
+    if (article.contentUrl && article.thumbnail) {
       if (isLoading) return;
       saveArticle(article);
     }
-  }, [article, saving, uploadCtx.indicators?.uploads]);
+  }, [article]);
 
   function upload() {
     const file = article?.image_binary;
@@ -235,7 +185,9 @@ export default function EditArticleForm() {
       file,
       label: "Article Thumbnail",
       onDone: (url: any) => setThumb(url),
-      path: `images/articles/${currentUser?.uid}.${new Date().getTime()}.png`,
+      path: `images/articles/${
+        auth.currentUser?.uid
+      }.${new Date().getTime()}.png`,
     });
 
     const html = article.content;
@@ -245,10 +197,13 @@ export default function EditArticleForm() {
       file: content,
       label: "Article Content",
       onDone: (url: any) => setContentUrl(url),
-      path: `content/articles/${currentUser?.uid}.${new Date().getTime()}.html`,
+      path: `content/articles/${
+        auth.currentUser?.uid
+      }.${new Date().getTime()}.html`,
     });
-    setSaving(true);
   }
+
+  const { currentUser } = useAuth()!;
 
   useEffect(() => {
     if (!currentUser || !currentUser?.uid) router.push("/login");
@@ -264,7 +219,7 @@ export default function EditArticleForm() {
         )} */}
         <div className="aspect-video w-96 ring-green ring-1 rounded ring-offset-2">
           <CropImageField
-            defaultImage={article.thumbnail ?? ""}
+            defaultImage=""
             aspectRatio={16 / 9}
             onFileChange={(file: any) => {
               setArticle({ ...article, image_binary: file });

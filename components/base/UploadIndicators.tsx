@@ -1,4 +1,4 @@
-import { useUpload } from "../context/UploadContext";
+import { useUpload } from "../../context/UploadContext";
 
 export default function UploadIndicators() {
   const uploadCtx = useUpload();

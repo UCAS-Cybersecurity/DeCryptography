@@ -1,4 +1,4 @@
-import Image from "../components/Image";
+import Image from "../base/Image";
 import Link from "next/link";
 import React from "react";
 

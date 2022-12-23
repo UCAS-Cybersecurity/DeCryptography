@@ -1,5 +1,5 @@
-import CreateArticleForm from "../../components/CreateArticleForm";
-import Image from "../../components/Image";
+import CreateArticleForm from "../../components/article/CreateArticleForm";
+import Image from "../../components/base/Image";
 
 export default function CreateArticlePage() {
   return (

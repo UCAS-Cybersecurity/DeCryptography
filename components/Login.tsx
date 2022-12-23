@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/router";
-import CropImageField from "./CropImageField";
-import { storage } from "../firebase";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import CropImageField from "./base/CropImageField";
 import useUploadHelpers from "../hooks/useUploadHelpers";
 
 export default function Login() {

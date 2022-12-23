@@ -1,6 +1,7 @@
-import { addDoc, collection, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { Article } from "../types";
+import { castArticle } from "../helpers/articlesHelper";
 
 export const collectionName = "articles";
 
@@ -33,3 +34,19 @@ export const remove = async (uid: string) => {
   const docRef = doc(articlesCollection, uid);
   await deleteDoc(docRef);
 };
+
+export const get = async (uid: string) => {
+  const docRef = doc(articlesCollection, uid);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const article = castArticle(docSnap);
+    article.contentUrl && (article.content = await loadHtmlContent(article.contentUrl!));
+    return article;
+  } else {
+    return null;
+  }
+}
+
+async function loadHtmlContent(url: string) {
+  return await (await fetch(url)).text();
+}

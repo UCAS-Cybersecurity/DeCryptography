@@ -1,5 +1,5 @@
 import NextImage from "next/image";
-import { getImagePrefix } from "../helpers/imagePrefix";
+import { getImagePrefix } from "../../helpers/imagePrefix";
 
 const prefix = getImagePrefix();
 export default function Image(props: any) {

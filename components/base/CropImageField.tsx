@@ -2,7 +2,7 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
-import Image from "../components/Image";
+import Image from "../base/Image";
 
 export default function CropImageField(props: {
   defaultImage: string | null;
