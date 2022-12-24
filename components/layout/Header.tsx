@@ -29,7 +29,7 @@ export default function Header() {
       <div className="h-16 bg-gradient-to-r from-blue to-green"></div>
       <Disclosure
         as="nav"
-        className="bg-gradient-to-r from-blue to-green fixed w-full z-10"
+        className="bg-gradient-to-r from-blue to-green fixed w-full z-10 print:hidden"
       >
         {({ open }) => (
           <>

@@ -98,7 +98,7 @@ export default function ArticlePage() {
         )}
         {article && getYoutubeId(article?.youtubeLink) && (
           <iframe
-            className="w-full aspect-video rounded-sm my-10"
+            className="w-full aspect-video rounded-sm my-10 print:hidden"
             src={`https://www.youtube.com/embed/${getYoutubeId(
               article?.youtubeLink
             )}`}
@@ -107,7 +107,7 @@ export default function ArticlePage() {
         )}
         {article && getYoutubeId(article?.youtubeLink2) && (
           <iframe
-            className="w-full aspect-video rounded-sm my-10"
+            className="w-full aspect-video rounded-sm my-10 print:hidden"
             src={`https://www.youtube.com/embed/${getYoutubeId(
               article?.youtubeLink2
             )}`}

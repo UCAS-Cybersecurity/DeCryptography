@@ -10,6 +10,9 @@ module.exports = {
         blue: "#00B2EE",
         green: "#71C72F",
       },
+      screens: {
+        'print': { 'raw': 'print' },
+      }
     },
   },
   plugins: [
