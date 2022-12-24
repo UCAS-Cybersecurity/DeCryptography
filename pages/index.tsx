@@ -5,6 +5,7 @@ import ArticleCard from "../components/article/ArticleCard";
 import { articlesCollection } from "../controllers/articles";
 import { castArticle } from "../helpers/articlesHelper";
 import { Article } from "../types";
+import FeaturedArticleCard from "../components/article/FeaturedArticleCard";
 
 export default function Home() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -13,6 +14,18 @@ export default function Home() {
       setArticles(snapshot?.docs?.map((doc) => castArticle(doc)));
     });
   }, []);
+  const featured = articles
+    ?.filter((a) => a.is_featured)
+    .sort((a, b) => {
+      if (a.createdAt! > b.createdAt!) {
+        return -1;
+      }
+      if (a.createdAt! < b.createdAt!) {
+        return 1;
+      }
+      return 0;
+    })
+    .slice(0, 1);
   return (
     <>
       <section className="relative">
@@ -49,13 +62,25 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 m-auto gap-8 content-center justify-center">
-          {articles?.map((article) => (
-            <ArticleCard article={article} key={article?.uid} />
+      <section>
+        <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-8">
+          {featured?.map((article) => (
+            <FeaturedArticleCard article={article} key={article?.uid} />
           ))}
         </div>
-      </div>
+      </section>
+
+      <section>
+        <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 m-auto gap-8 content-center justify-center">
+            {articles
+              ?.filter((a) => !a.is_featured)
+              ?.map((article) => (
+                <ArticleCard article={article} key={article?.uid} />
+              ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 }

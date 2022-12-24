@@ -17,5 +17,6 @@ export interface Article {
     pdfUrl?: string;
     canEdit?: boolean;
     canDelete?: boolean;
+    is_featured?: boolean;
 }
 
