@@ -4,9 +4,9 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <>
-      <div className="h-24"></div>
-      <div className="bottom-0 left-0 right-0 absolute">
+    <div>
+      <div className="h-24 absolute bottom-0 right-0 left-0 print:hidden"></div>
+      <div className="bottom-0 left-0 right-0 absolute print:relative">
         <div className="h-4 bg-gradient-to-r from-blue to-green"></div>
         <div className="bg-slate-800">
           <div className="mx-auto max-w-7xl p-2 sm:px-6 lg:px-8 w-full">
@@ -37,6 +37,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
