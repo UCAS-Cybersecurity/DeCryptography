@@ -49,8 +49,11 @@ export const get = async (uid: string) => {
     const article = castArticle(docSnap);
     article.contentUrl &&
       (article.content = await loadHtmlContent(article.contentUrl!));
+    if (article.replLink && article.replLink.includes("#")) {
+      article.replLink = article.replLink.split("#")[0];
+    }
     // article.replLink
-    const replRegex = /^([https?:\/{2}]+?replit.com\/@.*\/\w+)(#*.*)$/;
+    const replRegex = /^([https?:\/{2}]+?replit.com\/@.*\/.+)$/;
     const replMatch = article.replLink?.match(replRegex);
     if (
       replMatch &&
