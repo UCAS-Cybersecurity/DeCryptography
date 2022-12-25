@@ -9,7 +9,7 @@ import moment from "moment";
 
 export default function ArticlePage() {
   const { article, loading, router } = useArticle();
-
+  console.log(article?.replLink);
   if (loading) {
     return (
       <PageTitle className="h-auto">
@@ -17,7 +17,12 @@ export default function ArticlePage() {
           <h1 className="text-4xl font-light text-white m-auto max-w-5xl text-center py-5">
             Loading...
           </h1>
-          <Image src="/indicator.png" className="w-20 h-20 rounded-full my-2 shadow-lg animate-spin" width={80} height={80} />
+          <Image
+            src="/indicator.png"
+            className="w-20 h-20 rounded-full my-2 shadow-lg animate-spin"
+            width={80}
+            height={80}
+          />
         </div>
       </PageTitle>
     );
@@ -95,6 +100,13 @@ export default function ArticlePage() {
         )}
         {article?.pdfUrl && (
           <iframe src={article?.pdfUrl} className="w-full h-screen" />
+        )}
+
+        {article?.replLink && (
+          <iframe
+            src={article?.replLink + "?embed=true"}
+            className="w-full h-screen print:hidden my-10"
+          />
         )}
         {article && getYoutubeId(article?.youtubeLink) && (
           <iframe

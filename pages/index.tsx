@@ -14,18 +14,15 @@ export default function Home() {
       setArticles(snapshot?.docs?.map((doc) => castArticle(doc)));
     });
   }, []);
-  const featured = articles
-    ?.filter((a) => a.is_featured)
-    .sort((a, b) => {
-      if (a.createdAt! > b.createdAt!) {
-        return -1;
-      }
-      if (a.createdAt! < b.createdAt!) {
-        return 1;
-      }
-      return 0;
-    })
-    .slice(0, 1);
+  const featured = articles?.filter((a) => a.is_featured).sort((a, b) => {
+    if (a.createdAt! > b.createdAt!) {
+      return -1;
+    }
+    if (a.createdAt! < b.createdAt!) {
+      return 1;
+    }
+    return 0;
+  }).slice(0, 1);
   return (
     <>
       <section className="relative">
@@ -64,7 +61,7 @@ export default function Home() {
 
       <section>
         <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-8">
-          {featured?.map((article) => (
+         {featured?.map((article) => (
             <FeaturedArticleCard article={article} key={article?.uid} />
           ))}
         </div>
@@ -72,7 +69,7 @@ export default function Home() {
 
       <section>
         <div className="mx-auto max-w-6xl px-2 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 m-auto gap-8 content-center justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {articles
               ?.filter((a) => !a.is_featured)
               ?.map((article) => (

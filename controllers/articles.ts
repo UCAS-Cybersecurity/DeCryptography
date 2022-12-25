@@ -1,4 +1,11 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { Article } from "../types";
 import { castArticle } from "../helpers/articlesHelper";
@@ -40,12 +47,25 @@ export const get = async (uid: string) => {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     const article = castArticle(docSnap);
-    article.contentUrl && (article.content = await loadHtmlContent(article.contentUrl!));
+    article.contentUrl &&
+      (article.content = await loadHtmlContent(article.contentUrl!));
+    // article.replLink
+    const replRegex = /^([https?:\/{2}]+?replit.com\/@.*\/\w+)(#*.*)$/;
+    const replMatch = article.replLink?.match(replRegex);
+    if (
+      replMatch &&
+      replMatch.length > 1 &&
+      article.replLink?.includes("replit.com")
+    ) {
+      article.replLink = replMatch[1];
+    } else {
+      article.replLink = undefined;
+    }
     return article;
   } else {
     return null;
   }
-}
+};
 
 async function loadHtmlContent(url: string) {
   return await (await fetch(url)).text();
