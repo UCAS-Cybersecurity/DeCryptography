@@ -22,6 +22,7 @@ export default function ArticlePage() {
             className="w-20 h-20 rounded-full my-2 shadow-lg animate-spin"
             width={80}
             height={80}
+            alt="Loading"
           />
         </div>
       </PageTitle>
