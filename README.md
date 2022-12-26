@@ -1,7 +1,10 @@
 # ![image](https://user-images.githubusercontent.com/63330019/207848916-6f849df1-98a3-4b64-bd12-f784e2457ac3.png)  DeCryptography
-[![Build](https://img.shields.io/badge/%20%F0%9F%94%A8%20Build%20-%20Passing-success.svg)](https://github.com/UCAS-Cybersecurity/DeCryptography/actions/workflows/build.yaml) [![Build](https://img.shields.io/badge/%20%F0%9F%93%84%20Pages%20-%20Deployed-blue.svg)](https://ucas-cybersecurity.github.io/DeCryptography/) [![Build](https://img.shields.io/badge/%20%F0%9F%94%A5%20Firebase%20-%20Deployed-orange.svg)](https://decryptography-43fa4.web.app/) [![Build](https://img.shields.io/badge/%20%F0%9F%9A%80%20Vercel%20-%20Deployed-white.svg)](https://de-cryptography.vercel.app/)
+[![Build](https://img.shields.io/badge/%20%F0%9F%94%A8%20Build%20-%20Passing-success.svg)](https://github.com/UCAS-Cybersecurity/DeCryptography/actions/workflows/build.yaml) [![Build](https://img.shields.io/badge/%20%F0%9F%93%84%20Pages%20-%20Deployed-blue.svg)](https://ucas-cybersecurity.github.io/DeCryptography/) [![Build](https://img.shields.io/badge/%20%F0%9F%94%A5%20Firebase%20-%20Deployed-orange.svg)](https://decryptography-43fa4.web.app/) [![Build](https://img.shields.io/badge/%20%F0%9F%8E%A8%20Figma%20-%20Design-green.svg)](https://www.figma.com/file/EixKvtGscMtEOFeeWQgH9F/Cryptography-Projcet?t=6bbQxCtaiwJjHAty-1)
 
-
+## Collabrators
+- [Khader Khudair](https://github.com/Khader-1) Developer
+- [Ala'a Jber Karaja](https://github.com/AlaaJkaraja) Developer
+- [Abdelrahman Almajayda](https://github.com/itsDARKSAMA) UX/UI Designer
 ## About
 An application to share descriptions of the most common cryptography algorithms. want to learn more about the project? Contact [me](https://t.me/Khader_Kh).
 
