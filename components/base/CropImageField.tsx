@@ -3,6 +3,7 @@ import "cropperjs/dist/cropper.css";
 import { CameraIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import Image from "../base/Image";
+import Compressor from "compressorjs";
 
 export default function CropImageField(props: {
   defaultImage: string | null;
@@ -15,11 +16,27 @@ export default function CropImageField(props: {
     setCropData(defaultImage);
   }, [defaultImage]);
   const [image, setImage] = useState<string | null>();
-  const [cropper, setCropper] = useState<any>();
+  const [cropper, setCropper] = useState<Cropper | null>();
 
-  function crop(data: any) {
+  async function crop(data: string) {
     setCropData(data);
-    onFileChange(dataURLtoFile(data, "image.png"));
+    const compressed = await compress(dataURLtoFile(data, "image.png"))
+    onFileChange(compressed);
+    return compressed;
+  }
+
+  function compress(file: File): Promise<File | Blob | Error> {
+    return new Promise((resolve, reject) => {
+      new Compressor(file, {
+        quality: 0.6,
+        success(result) {
+          resolve(result);
+        },
+        error(err) {
+          resolve(file);
+        },
+      });
+    });
   }
 
   function dataURLtoFile(url: string, filename: string) {
@@ -37,7 +54,7 @@ export default function CropImageField(props: {
   }
   const getCropData = () => {
     if (typeof cropper !== "undefined") {
-      crop(cropper.getCroppedCanvas().toDataURL());
+      return crop(cropper!.getCroppedCanvas().toDataURL());
     }
   };
   const filePickerRef = useRef<HTMLInputElement>(null);

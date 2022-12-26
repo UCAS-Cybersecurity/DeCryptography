@@ -15,6 +15,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@types/node": "18.11.13",
     "@types/react": "18.0.26",
+    "compressorjs": "^1.1.1",
     "dangerously-set-html-content": "^1.0.12",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
@@ -26,6 +27,7 @@
     "react": "^18.2.0",
     "react-cropper": "^2.1.8",
     "react-dropzone": "^14.2.3",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-quill": "^2.0.0",
     "typescript": "4.9.4",
     "yup": "^0.32.11"

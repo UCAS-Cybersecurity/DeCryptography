@@ -6,26 +6,25 @@ import Link from "next/link";
 import useArticle from "../../hooks/useArticle";
 import PageTitle from "../../components/layout/PageTitle";
 import moment from "moment";
+import LoadingIndicator from "../../components/base/LoadingIndicator";
 
 export default function ArticlePage() {
   const { article, loading, router } = useArticle();
   console.log(article?.replLink);
   if (loading) {
     return (
-      <PageTitle className="h-auto">
-        <div className="flex flex-col justify-center items-center w-full pb-8 px-2">
-          <h1 className="text-4xl font-light text-white m-auto max-w-5xl text-center py-5">
-            Loading...
-          </h1>
-          <Image
-            src="/indicator.png"
-            className="w-20 h-20 rounded-full my-2 shadow-lg animate-spin"
-            width={80}
-            height={80}
-            alt="Loading"
-          />
+      <>
+        <PageTitle className="h-auto">
+          <div className="flex flex-col justify-center items-center w-full pb-8 px-2">
+            <h1 className="text-4xl font-light text-white m-auto max-w-5xl text-center py-5">
+              Loading...
+            </h1>
+          </div>
+        </PageTitle>
+        <div className="w-full h-screen flex items-top justify-center">
+          <LoadingIndicator className="w-20 h-20 rounded-full my-2 shadow-lg object-cover" />
         </div>
-      </PageTitle>
+      </>
     );
   }
 
