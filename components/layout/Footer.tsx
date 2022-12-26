@@ -5,7 +5,7 @@ import React from "react";
 export default function Footer() {
   return (
     <div>
-      <div className="h-24 print:hidden"></div>
+      <div className="h-24 print:hidden z-30"></div>
       <div className="bottom-0 left-0 right-0 fixed print:relative">
         <div className="h-4 bg-gradient-to-r from-blue to-green"></div>
         <div className="bg-slate-800">

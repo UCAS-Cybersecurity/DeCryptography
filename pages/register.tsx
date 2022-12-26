@@ -1,6 +1,6 @@
 import Link from "next/link";
 import PageTitle from "../components/layout/PageTitle";
-import Login from "../components/Login";
+import Register from "../components/Register";
 import useGuestOnly from "../hooks/auth/useGuestOnly";
 
 export default function LoginPage() {
@@ -12,11 +12,11 @@ export default function LoginPage() {
           Welcome, let's get started!
         </h1>
       </PageTitle>
-      <Login />
+      <Register />
       <p className="text-center sm:text-lg text-sm text-slate-600 font-light mt-4">
-        Don't have an account?{" "}
-        <Link href="/register" className="text-blue">
-          Register
+        Already have an account?{" "}
+        <Link href="/login" className="text-blue">
+          Login
         </Link>
       </p>
     </div>

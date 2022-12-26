@@ -7,14 +7,15 @@ import {
   onAuthStateChanged,
   updateProfile,
   User,
+  UserCredential,
 } from "firebase/auth";
 
 interface AuthContextInterface {
   currentUser: User | null;
-  login: (email: string, password: string) => Promise<any>;
-  signup: (email: string, password: string) => Promise<any>;
-  logout: () => Promise<any>;
-  updateUser: (data: { displayName: string; photoURL: string }) => Promise<any>;
+  login: (email: string, password: string) => Promise<UserCredential>;
+  signUp: (email: string, password: string) => Promise<UserCredential>;
+  logout: () => Promise<void>;
+  updateUser: (data: { displayName: string; photoURL?: string }) => Promise<void>;
 }
 
 const AuthContext = React.createContext<AuthContextInterface | null>(null);
@@ -28,7 +29,7 @@ export function AuthProvider(props: { children: any }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  function signup(email: string, password: string) {
+  function signUp(email: string, password: string) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
@@ -40,7 +41,7 @@ export function AuthProvider(props: { children: any }) {
     return signOut(auth);
   }
 
-  async function updateUser(data: { displayName: string; photoURL: string }) {
+  async function updateUser(data: { displayName: string; photoURL?: string }) {
     const { displayName, photoURL } = data;
     if (!auth?.currentUser) return;
     return updateProfile(auth?.currentUser, {
@@ -60,7 +61,7 @@ export function AuthProvider(props: { children: any }) {
   const value = {
     currentUser,
     login,
-    signup,
+    signUp,
     logout,
     updateUser,
   };

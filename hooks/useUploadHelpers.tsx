@@ -1,4 +1,9 @@
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+  UploadTaskSnapshot,
+} from "firebase/storage";
 import { useUpload } from "../context/UploadContext";
 import { storage } from "../firebase";
 
@@ -11,7 +16,7 @@ export default function useUploadHelpers() {
     onError?: Function;
     onProgress?: Function;
     path: any;
-  }) {
+  }): Promise<UploadTaskSnapshot | undefined> {
     const {
       label,
       file,
@@ -20,12 +25,11 @@ export default function useUploadHelpers() {
       onError = () => {},
       onProgress = () => {},
     } = options;
-    if (!file) return true;
-    let url = "";
+    if (!file) return;
     const storageRef = ref(storage, path);
     const uploadTask = uploadBytesResumable(storageRef, file);
     indicators?.addUpload({ label, progress: 0, size: file.size });
-    await uploadTask.on(
+    uploadTask.on(
       "state_changed",
       (snapshot) => {
         indicators?.updateUpload({
@@ -57,7 +61,7 @@ export default function useUploadHelpers() {
       },
       async () => {
         try {
-          url = await getDownloadURL(uploadTask.snapshot.ref);
+          let url = await getDownloadURL(uploadTask.snapshot.ref);
           onDone(url);
           indicators?.updateUpload({
             label,
@@ -70,7 +74,21 @@ export default function useUploadHelpers() {
         }
       }
     );
-    return false;
+    return await uploadTask;
   }
-  return { uploadImage, indicators };
+
+  async function upload(options: {
+    file?: File;
+    label: string;
+    onDone?: Function;
+    onError?: Function;
+    onProgress?: Function;
+    path: any;
+  }): Promise<string | undefined> {
+    const snapshot = await uploadImage(options);
+    if (!snapshot) return;
+    return await getDownloadURL(snapshot.ref);
+  }
+
+  return { uploadImage, upload, indicators };
 }
